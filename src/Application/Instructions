@@ -1,0 +1,18 @@
+Create a simple banking application
+There should be a Bank Class, it should be an ArrayList of Branches
+Each Branch should have name and ArrayList of Customers
+The Customer class should have a name and an ArrayList of
+doubles (Transactions).
+Customer:
+Name and the ArrayList of doubles
+Branch:
+Need to be able to add a new customer and initial transaction amount.
+Also needs to add additional transactions for that customer/branch.
+Bank:
+Add a new Branch
+Add a customer to that Branch with initial transaction
+Add a transaction for an existing customer to that branch
+Show a list of customers for a particular branch and optionally a list of
+their transactions
+Demonstration of autoboxing and unboxing in your code.
+Add data validation
