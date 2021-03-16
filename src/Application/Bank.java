@@ -4,87 +4,51 @@ import java.util.ArrayList;
 
 public class Bank {
 
-    private final ArrayList<Branch> branches = new ArrayList<Branch>();
+    private String name;
+    private ArrayList<Branch> branches;
 
-    public void addBranch(Branch branch){
+    public Bank(String name){
+        this.name = name;
+        branches = branches = new ArrayList<Branch>();
+    }
+
+    public void addBranch(String name){
         if(branches.isEmpty()){
-            branches.add(branch);
+            branches.add(new Branch(name));
             return;
         }
-        int index = findBranch(branch);
-        System.out.println(index);
-        if(index < 0){
-            branches.add(branch);
+        Branch branchExistence = findBranch(name);
+        if(branchExistence == null){
+            branches.add(new Branch(name));
         }else{
-            System.out.println(branch.getName() + " branch already exists.");
+            System.out.println(name + " branch already exists.");
         }
     }
 
-    public void addCustomer(Branch branch, Customer customer){
-        int index = findBranch(branch);
-        if(index >= 0){
-            int exist = findCustomer(customer);
-            if(exist == -1){
-                branch.getCustomers().add(customer);
-            }else{
-                System.out.println("The customer already exist " +
-                        "in " + branch.getName() + " branch.");
-            }
+    public void addCustomer(String branchName, Customer customer){
+        Branch myBranch = findBranch(branchName);
+        myBranch.addCustomer(customer);
+    }
+
+    public void newTransaction(String name, double amount, String branch){
+        Branch myBranch = findBranch(branch);
+        myBranch.newTransaction(name,amount);
+    }
+
+    public void printCustomers(String branch){
+        Branch myBranch = findBranch(branch);
+        if(myBranch != null){
+            myBranch.printCustomers();
         }
     }
 
-    public void newTransaction(Customer customer, double amount, Branch branch){
-        int indexOfCustomer = findCustomer(customer);
-        int indexOfBranch = findBranch(branch);
-        if(indexOfCustomer != -1 && indexOfBranch != -1){
-            int branchValidation = branch.findCustomer(customer);
-            if(branchValidation != -1){
-                branches.get(indexOfBranch).getCustomers().get(indexOfCustomer).getTransactions().add(amount);
-            }
-        }
-    }
-
-    public void printCustomers(Branch branch){
-        if(!branches.isEmpty()){
-            System.out.println(branch.getName() + "'s branch list of customers.");
-            for(int i=0; i<branch.getCustomers().size(); i++){
-                System.out.println("Name: " +
-                        branch.getCustomers().get(i).getName() +
-                        "\n===Transactions===\r");
-                for(int j=0; j<branch.getCustomers().get(i).getTransactions().size(); j++){
-                    System.out.println((j+1) + ". " +
-                            branch.getCustomers().get(i).getTransactions().get(j));
-                }
-            }
-        }
-    }
-
-    private int findBranch(Branch branch){
+    private Branch findBranch(String branchName){
         for(int i=0; i<branches.size(); i++){
-            String name = branch.getName();
-            if(name == branches.get(i).getName()){
-                return i;
+            if(branchName == branches.get(i).getName()){
+                return branches.get(i);
             }
         }
-        return -1;
+        return null;
     }
 
-    public int findCustomer(Customer customer){
-        if(!branches.isEmpty()){
-            for(int i=0; i<branches.size(); i++){
-                Branch branch = branches.get(i);
-                for(int j=0 ; j<branch.getCustomers().size(); j++){
-                    String name = branch.getCustomers().get(j).getName();
-                    if(customer.getName()== name){
-                        return j;
-                    }
-                }
-            }
-        }
-        return -1;
-    }
-
-    public ArrayList<Branch> getBranches() {
-        return branches;
-    }
 }
